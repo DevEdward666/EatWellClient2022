@@ -1,21 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
+import React, {useEffect, useState} from 'react';
+import store from './Services/Store';
+import Routes from './Hooks/Routes';
+import {Provider} from 'react-redux';
+import GlobalFont from 'react-native-global-font';
+const App = () => {
+  useEffect(() => {
+    let mounted = true;
+    const globalfont = () => {
+      let fontName = 'SFUIDisplay-Regular';
+      GlobalFont.applyGlobal(fontName);
+    };
+    mounted && globalfont();
+    return () => {
+      mounted = false;
+    };
+  }, []);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
